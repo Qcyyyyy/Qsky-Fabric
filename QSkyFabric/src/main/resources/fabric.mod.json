@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "qsky",
+	"version": "${version}",
+	"name": "Qsky",
+	"description": "Qsky Mod for Cosmic Sky",
+	"authors": [
+		"Qcy"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/qsky/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"qcy.qsky.Qsky"
+		],
+		"client": [
+			"qcy.qsky.QskyClient"
+		]
+	},
+	"mixins": [
+		"qsky.mixins.json",
+		{
+			"config": "qsky.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "qcy.qsky.mixin.client",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"HandledScreenMixin",
+		"InGameHudMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
