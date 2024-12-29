@@ -31,11 +31,11 @@ public class CommandCD {
     public void startCD() {
         if (this.command.equals("fix")) {
             if (QskyClient.config.rank == 0) {
-                this.timeLeft = 0;
+                this.timeLeft = 20*60*1000;
             } else if (QskyClient.config.rank == 1) {
-                this.timeLeft = 0;
-            } else if (QskyClient.config.rank == 2) {
                 this.timeLeft = 10*60*1000;
+            } else if (QskyClient.config.rank == 2) {
+                this.timeLeft = 5*60*1000;
             } else if (QskyClient.config.rank == 3) {
                 this.timeLeft = 2*60*1000;
             } else {
@@ -77,6 +77,14 @@ public class CommandCD {
             } else {
                 MinecraftClient.getInstance().player.sendMessage(Text.of("[Qsky]: Rank not set! Use /qskysetrank #"), false);
             }
+        } else if (this.command.equals("adrenRush")) {
+            this.timeLeft = 2*60*1000;
+        } else if (this.command.equals("fixerFelix")) {
+            this.timeLeft = 30*60*1000;
+        }
+
+        else {
+            
         }
     }
 }

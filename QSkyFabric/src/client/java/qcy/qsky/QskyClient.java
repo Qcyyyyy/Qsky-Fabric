@@ -2,32 +2,20 @@ package qcy.qsky;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
 import qcy.qsky.CommandCooldown.ChatEventListener;
 import qcy.qsky.CommandCooldown.CommandCD;
 import qcy.qsky.EntityInfoHud.EntityRenderHud;
 import qcy.qsky.PetCooldown.CountdownManager;
 import qcy.qsky.PetCooldown.RightClickListener;
 import qcy.qsky.QskyGUI.RenderQskyGUI;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import static qcy.qsky.QskyGUI.RenderQskyGUI.*;
 
 public class QskyClient implements ClientModInitializer {
@@ -37,12 +25,25 @@ public class QskyClient implements ClientModInitializer {
 	public static ChatEventListener chatEvList = new ChatEventListener();
 	public static String searchField = "";
 	public static QskyConfig config = QskyConfig.load();
+	public static CommandCD adrenalineCD = new CommandCD("");
+
+
 
 	@Override
 	public void onInitializeClient() {
 		HudRenderCallback.EVENT.register(new EntityRenderHud());
 		RightClickListener.register();
 		chatEvList.register();
+
+
+		ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+			if (message.getString().startsWith("* ADRENALINE")) {
+				MinecraftClient.getInstance().player.sendMessage(Text.literal("ADRENALINE triggered"));
+				ChatEventListener.adrenRush.startCD();
+			} else if (message.getString().startsWith("Fixer Felix:")) {
+				ChatEventListener.fixerFelix.startCD();
+			}
+		});
 
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(ClientCommandManager.literal("islandinfo")
@@ -143,6 +144,8 @@ public class QskyClient implements ClientModInitializer {
 				chatEvList.fixallCommand.secondElapsed(elapsedTime);
 				chatEvList.healCommand.secondElapsed(elapsedTime);
 				chatEvList.feedCommand.secondElapsed(elapsedTime);
+				ChatEventListener.adrenRush.secondElapsed(elapsedTime);
+				ChatEventListener.fixerFelix.secondElapsed(elapsedTime);
 			}
 
 		});

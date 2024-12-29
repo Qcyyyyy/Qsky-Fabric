@@ -10,6 +10,8 @@ public class ChatEventListener {
     public CommandCD fixallCommand = new CommandCD("fix all");
     public CommandCD healCommand = new CommandCD("heal");
     public CommandCD feedCommand = new CommandCD("feed");
+    public static CommandCD adrenRush = new CommandCD("adrenRush");
+    public static CommandCD fixerFelix = new CommandCD("fixerFelix");
 
     public void register() {
         ClientSendMessageEvents.ALLOW_COMMAND.register((message) -> {

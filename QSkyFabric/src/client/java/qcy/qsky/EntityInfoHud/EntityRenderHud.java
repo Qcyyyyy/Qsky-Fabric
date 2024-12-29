@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.scoreboard.*;
 import net.minecraft.text.Text;
+import qcy.qsky.CommandCooldown.ChatEventListener;
 import qcy.qsky.CommandCooldown.CommandCD;
 import qcy.qsky.QskyGUI.RenderQskyGUI;
 import qcy.qsky.QskyClient;
@@ -54,6 +55,8 @@ public class EntityRenderHud implements HudRenderCallback {
             long fixAllCD = QskyClient.chatEvList.fixallCommand.getTimeLeft();
             long healCD = QskyClient.chatEvList.healCommand.getTimeLeft();
             long feedCD = QskyClient.chatEvList.feedCommand.getTimeLeft();
+            long adrenCD = ChatEventListener.adrenRush.getTimeLeft();
+            long felixCD = ChatEventListener.fixerFelix.getTimeLeft();
             HashMap<String, Integer> colors = new HashMap<String, Integer>();
 
             String cdAdder;
@@ -81,8 +84,20 @@ public class EntityRenderHud implements HudRenderCallback {
                 cdList.add(cdAdder);
                 colors.put(cdAdder, 0xFF1493);
             }
+
+            if (adrenCD > 0) {
+                cdAdder = "Adrenaline: " + String.format("%d:%02d", adrenCD / (60 * 1000), (adrenCD % (60 * 1000))/1000);
+                cdList.add(cdAdder);
+                colors.put(cdAdder, 0xFF1493);
+            }
+
+            if (felixCD > 0) {
+                cdAdder = "Fixer Felix: " + String.format("%d:%02d", felixCD / (60 * 1000), (felixCD % (60 * 1000))/1000);
+                cdList.add(cdAdder);
+                colors.put(cdAdder, 0xFF1493);
+            }
             if (!cdList.isEmpty()) {
-                drawContext.fill(x, y, x + 75, y + 10 + cdList.size()*10, 0x80000000);
+                drawContext.fill(x, y, x + 100, y + 10 + cdList.size()*10, 0x80000000);
             }
             int yInc = 0;
             for (String cd: cdList) {
